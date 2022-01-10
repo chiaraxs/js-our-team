@@ -2,9 +2,8 @@
 // Ogni membro ha le informazioni necessarie per stampare la relativa card: Nome, Ruolo e Foto.
 // Prendendo come riferimento la card di esempio presente nell’html, stampiamo dinamicamente una card per ogni membro del team.
 
-
-// 1. aggancio l'html per stampa a video
-const outputHtml = document.querySelector('.team-card');
+// 1. collego l'html per stampa a video
+const outputHtml = document.querySelector('.team-container');
 
 // 2. array di oggetti predefinito
 const team = [
@@ -41,13 +40,35 @@ const team = [
 ];
   
 
-// 3. creo ciclo for con all'interno un for-in
-for (let i = 0; i < team.length; i++){
-    
-  const member = team[i];
+// 3. creo ciclo for per camminare dentro l'array 'team'
+// N.B. i=1 perché se fosse i=0 -> ripeterebbe la prima card (wayne barnett)
+for (let i = 1; i < team.length; i++){
   
-  // creo ciclo for/in per stamparli tutti
-  for ( let key in member ) {
-    console.log(key, member[key]) // prova stampa in console
-  }
-}
+  const member = team[i]; // const fissa per individuare [i] specifico dentro array 'team'
+
+  // PROVA STAMPA IN CONSOLE
+  // for ( let key in member ) {
+  //   console.log(key, member[key]) // prova stampa in console
+  // }
+
+  // PROVA PRIMA STAMPA A VIDEO
+  // outputHtml.innerHTML += 'name: ' + member.name + '<br/>';
+  // outputHtml.innerHTML += 'role: ' + member.role + '<br/>';
+  // outputHtml.innerHTML += 'image: ' + member.image + '<br/>';
+
+
+  // stampo i team-container per ogni membro del team
+  outputHtml.innerHTML += 
+  `<div class="team-card">
+      <div class="card-image">
+      <img 
+        src="img/${member.image}" 
+        alt="${member.name}"
+      />
+    </div>
+    <div class="card-text">
+      <h3>${member.name}</h3>
+      <p>${member.role}</p>
+    </div>
+  </div>`;
+} 

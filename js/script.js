@@ -2,8 +2,9 @@
 // Ogni membro ha le informazioni necessarie per stampare la relativa card: Nome, Ruolo e Foto.
 // Prendendo come riferimento la card di esempio presente nell’html, stampiamo dinamicamente una card per ogni membro del team.
 
-// 1. collego l'html per stampa a video
-const outputHtml = document.querySelector('.team-container');
+// 1. collego l'html per stampa a video -> team-container & button x add member
+const teamContainer = document.querySelector('.team-container');
+const addMemberButton = document.getElementById('addMemberButton');
 
 // 2. array di oggetti predefinito
 const team = [
@@ -40,35 +41,58 @@ const team = [
 ];
   
 
-// 3. creo ciclo for per camminare dentro l'array 'team'
-// N.B. i=1 perché se fosse i=0 -> ripeterebbe la prima card (wayne barnett)
-for (let i = 1; i < team.length; i++){
+// 3. creo funzione per stampare cards (per ogni member) nel container
+function printCards (container, member) {
+  
+  container.innerHTML += 
+  `<div class="team-card">
+        <div class="card-image">
+        <img 
+          src="img/${member.image}" 
+          alt="${member.name}"
+        />
+      </div>
+      <div class="card-text">
+        <h3>${member.name}</h3>
+        <p>${member.role}</p>
+      </div>
+  </div>`
+} 
+
+
+// 4. creo ciclo for per camminare dentro l'array 'team'
+for (let i = 0; i < team.length; i++){
   
   const member = team[i]; // const fissa per individuare [i] specifico dentro array 'team'
+  printCards (teamContainer, member) // richiamo la funzione pr stampare le cards nel teamContainer in html
 
-  // PROVA STAMPA IN CONSOLE
-  // for ( let key in member ) {
-  //   console.log(key, member[key]) // prova stampa in console
-  // }
+}
 
-  // PROVA PRIMA STAMPA A VIDEO
-  // outputHtml.innerHTML += 'name: ' + member.name + '<br/>';
-  // outputHtml.innerHTML += 'role: ' + member.role + '<br/>';
-  // outputHtml.innerHTML += 'image: ' + member.image + '<br/>';
+// BONUS:
+// Utilizziamo gli input presenti nella pagina per permettere all’utente di aggiungere nuovi membri del team:
+// cliccando sul pulsante “add” viene creato un nuovo oggetto, il quale viene inserito nell’array iniziale, 
+// e viene stampata una nuova card con tutte le informazioni inserite dall’utente.
+
+// 5. creo evento al click -> aggiunta nuovo membro on click in 'add'
+addMemberButton.addEventListener('click', function () {
+  
+  // fisso const per nuovi valori aggiunti tramite form
+  const newName = document.getElementById('name').value;
+  const newRole = document.getElementById('role').value;
+  const newImage = document.getElementById('image').value;
 
 
-  // stampo i team-container per ogni membro del team
-  outputHtml.innerHTML += 
-  `<div class="team-card">
-      <div class="card-image">
-      <img 
-        src="img/${member.image}" 
-        alt="${member.name}"
-      />
-    </div>
-    <div class="card-text">
-      <h3>${member.name}</h3>
-      <p>${member.role}</p>
-    </div>
-  </div>`;
-} 
+  // creo nuovo oggetto per newMember
+  let newMember = {
+    name: newName,
+    role: newRole,
+    image: newImage
+  }
+
+  // pusho il nuovo membro (inserito con form) dentro l'array di oggetti 'team'
+  team.push(newMember);
+
+  // richiamo la funzione per stampare nuovamente con l'aggiuta del nuovo membro
+  printCards(teamContainer, newMember)
+
+});
